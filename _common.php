@@ -6,6 +6,7 @@ $id = $_GET['id'];
 $action = $_GET['action'];
 $order = $_GET['order'];
 $sid = session_id();
+
 class ShopClass
 {
 	private $_db;

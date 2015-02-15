@@ -1,5 +1,6 @@
 <?php
 require_once '_common.php';
+require_once 'header.php';
 
 $products = $shop->selectCartProducts();
 $product = array();
@@ -7,10 +8,8 @@ $items=0;
 $cost=0;
 
 if (isset($_SESSION['goods'])) {
-
 ?>
 <h1>Your cart</h1>
-<p><a href="catalog.php">Back to catalog</a></p>
 <hr>
 <table>
 		<tr>
@@ -29,19 +28,15 @@ if (isset($_SESSION['goods'])) {
 			<td><a href="cart.php?action=delete&id=<?=$key?>">delete</a></td>
 		</tr>
 	<? endforeach ?>
-		<tr><td>Sum of items:</td><td><?=$items?></td><td></td></tr>
-		<tr><td>Total cost:</td><td><?=$cost?> $</td><td></td></tr>
+		<tr><td>Sum of items:</td><td><?=$items?></td><td></td><td></td></tr>
+		<tr><td>Total cost:</td><td><?=$cost?> $</td><td></td><td><a href="cart.php?action=order">Send order!</a></td></tr>
+		<tr><td></td><td><a href="cart.php?action=clearcart">Clear cart</a></td><td><a href="catalog.php">Back to catalog</a></td><td></td></tr>
 </table>
-<p><a href="cart.php?action=clearcart">Clear cart</a> / <a href="cart.php?action=order">Send order!</a></p>
-<p></p>
 <?
-	/*if ($mailSend = TRUE) {
-		echo "<h3>Your Order is send to manager succesfully!<h3>";
-	}
-	unset($mailSend);*/
 }
 else {
 	echo '<h2>No goods!</h2><h3><a href="catalog.php">Go to catalog</a></h3>';
 }
 
+require_once 'footer.php';
 ?>

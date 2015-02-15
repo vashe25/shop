@@ -1,0 +1,84 @@
+body {
+	font-family: Arial;
+	background-color: #fff;
+	font-size: 16px;
+	width: 75%;
+	margin: 0px auto;
+}
+#header {
+	background-color: rgb(71, 159, 247);
+	text-align: center;
+	vertical-align: middle;
+	color: #fff;
+	font-size: 64px;
+	font-weight: bold;
+}
+
+#content {
+	
+}
+#footer {
+	background-color: rgb(71, 159, 247);
+	text-align: center;
+	vertical-align: middle;
+	color: #fff;
+	font-size: 64px;
+	font-weight: bold;
+}
+
+h1 {
+	color:#fff;
+	background-color: rgb(71, 159, 247);
+	font-size: 24px;
+	padding: 5px;
+	margin: 0px;
+}
+h3 {
+	font-size: 20px;
+}
+a {
+	padding: 10px;
+	color: rgb(71, 159, 247);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+	color: #fff;
+	background-color: rgb(71, 159, 247);
+}
+a.cart {
+	display: inline-block;
+	width: 50px;
+	height: 64px;
+	background-image: url(pix/cart.png);
+	background-repeat: space;
+	background-position: center;
+}
+a.cart:hover {
+	background-image: url(pix/cart_.png);
+}
+table {
+	border-spacing: 0px;
+	width: 100%;
+
+}
+table tr {
+	margin: 5px 0px;
+	
+}
+table tr td {
+	padding: 10px;
+	border-bottom: 2px solid rgb(198, 226, 229);
+}
+img.product {
+	width:128px;
+	height: 128px;
+	vertical-align: top;
+}
+
+hr {
+	border-style: solid;
+	border-width: 2px;
+	border-color: rgb(198, 226, 229);
+	margin: 0px;
+}

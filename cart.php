@@ -1,6 +1,5 @@
 <?php
 require_once '_common.php';
-require_once 'header.php';
 
 $products = $shop->selectCartProducts();
 $product = array();
@@ -37,6 +36,4 @@ if (isset($_SESSION['goods'])) {
 else {
 	echo '<h2>No goods!</h2><h3><a href="catalog.php">Go to catalog</a></h3>';
 }
-
-require_once 'footer.php';
 ?>

@@ -2,15 +2,17 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="./style.css">
-	<title></title>
+	<title>
+		{% block title %}
+			Shop: box
+	    {% endblock %}
+	</title>
 </head>
 <body>
 	<div id="header">Box shop</div>
 	
 	{% block content %}
 	{% endblock %}
-
-
 
 </body>
 </html>

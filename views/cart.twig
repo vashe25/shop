@@ -6,7 +6,7 @@
 
 {% block content %}
 
-	{% if goods is defined %}		
+	{% if product is iterable %}		
 		<h1>Your cart</h1>
 		<hr>
 		<table>
@@ -16,24 +16,36 @@
 					<td>Image</td>
 					<td>Edit:</td>
 				</tr>
-			<? foreach ($products as $key => $item) : ?>
-				<?$product=$shop->selectProductById($key);?>
+			{% for value in product %}
 				<tr>
-					<td><?=$key?>/<?=$product["title"]?></td>
-					<td>Amount: <?= htmlspecialchars($item); $items=$items+$item;?>
-						<br>Cost: <?$cost=$item*$product["price"]+$cost; echo $product["price"]*$item;?> $</td>
-					<td><img src="<?=$product['image']?>" /></td>
-					<td><a href="cart.php?action=delete&id=<?=$key?>">delete</a></td>
+					<td>{{ value.id }} \ {{ value.title }}</td>
+					<td>Amount: {{ value.item }} <br>
+						Cost: {{ value.price }} $</td>
+					<td><img src="{{ value.image }}" /></td>
+					<td><a href="cart.php?action=delete&id={{ value.id }}">delete</a></td>
 				</tr>
-			<? endforeach ?>
-				<tr><td>Sum of items:</td><td>{{ items }}</td><td></td><td></td></tr>
-				<tr><td>Total cost:</td><td>{{ cost }}</td><td></td><td><a href="cart.php?action=order">Send order!</a></td></tr>
-				<tr><td></td><td><a href="cart.php?action=clearcart">Clear cart</a></td><td><a href="catalog.php">Back to catalog</a></td><td></td></tr>
+			{% endfor %}
+				<tr>
+					<td>Sum of items:</td><td>{{ items }}</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Total cost:</td>
+					<td>{{ cost }}</td>
+					<td></td>
+					<td><a href="cart.php?action=order">Send order!</a></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a href="cart.php?action=clearcart">Clear cart</a></td>
+					<td><a href="catalog.php">Back to catalog</a></td>
+					<td></td>
+				</tr>
 		</table>
-		
-		
-		
-		{% else %}
-		    <h2>No goods!</h2><h3><a href="catalog.php">Go to catalog</a></h3>
-		{% endif %}
+			
+	{% else %}
+		<h2>No goods!</h2>
+		<h3><a href="catalog.php">Go to catalog</a></h3>
+	{% endif %}
 {% endblock %}

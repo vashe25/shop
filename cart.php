@@ -1,39 +1,38 @@
 <?php
 require_once '_common.php';
 
-$products = $shop->selectCartProducts();
-$product = array();
-$items=0;
-$cost=0;
 
+//проверим есть ли у нас массив с товарами, которые добавил пользователь в корзину
 if (isset($_SESSION['goods'])) {
-?>
-<h1>Your cart</h1>
-<hr>
-<table>
-		<tr>
-			<td>Product uniq id/title:</td>
-			<td>Product count:</td>
-			<td>Image</td>
-			<td>Edit:</td>
-		</tr>
-	<? foreach ($products as $key => $item) : ?>
-		<?$product=$shop->selectProductById($key);?>
-		<tr>
-			<td><?=$key?>/<?=$product["title"]?></td>
-			<td>Amount: <?= htmlspecialchars($item); $items=$items+$item;?>
-				<br>Cost: <?$cost=$item*$product["price"]+$cost; echo $product["price"]*$item;?> $</td>
-			<td><img src="<?=$product['image']?>" /></td>
-			<td><a href="cart.php?action=delete&id=<?=$key?>">delete</a></td>
-		</tr>
-	<? endforeach ?>
-		<tr><td>Sum of items:</td><td><?=$items?></td><td></td><td></td></tr>
-		<tr><td>Total cost:</td><td><?=$cost?> $</td><td></td><td><a href="cart.php?action=order">Send order!</a></td></tr>
-		<tr><td></td><td><a href="cart.php?action=clearcart">Clear cart</a></td><td><a href="catalog.php">Back to catalog</a></td><td></td></tr>
-</table>
-<?
+	
+	//достаем из сесии массив: 'ID продукта' => 'количество штук'
+	$products = $shop->selectCartProducts();
+
+	//соберем супер-массив для проброски в шаблон вывода
+	foreach ($products as $key => $item) {
+		//выбираем из базы массив $продукта по его ID
+		$array =  $shop->selectProductById($key);
+		//добавляем в массив $продукта строку о количестве штук, заказанных пользователем
+		$array['item'] = $item;
+		//собираем все массивы $продуктов в один супер-массив, где ключем является ID продукта
+		$product["$key"]= $array;
+	}
+	
+	//посчитаем пользователю его заказ
+	foreach ($product as $value) {
+		//считаем количество товаров
+		$items = $value['item'] + $items;
+		//считаем общую стоимость заказа
+		$cost = $value['item'] * $value['price'] + $cost;
+		
+	}
+	
+	//пробрасываем в шаблон вывода супер-массив и посчитанные: количество и стоимость заказа
+	echo $twig->render('cart.twig', array('product' => $product, 'items' => $items, 'cost' => $cost));
 }
+
 else {
-	echo '<h2>No goods!</h2><h3><a href="catalog.php">Go to catalog</a></h3>';
+	//запускаем шаблон, в случае пустой корзины
+	echo $twig->render('cart.twig');
 }
-?>
+?>	

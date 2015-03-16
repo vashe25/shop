@@ -1,6 +1,8 @@
 <?php
 require_once '_common.php';
 
+$items = 0;
+$cost = 0;
 
 //проверим есть ли у нас массив с товарами, которые добавил пользователь в корзину
 if (isset($_SESSION['goods'])) {

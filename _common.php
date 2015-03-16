@@ -10,9 +10,9 @@ $twig = new Twig_Environment($loader);
 session_start();
 
 $goods = isset($_SESSION['goods']) ? $_SESSION['goods'] : array();
-$id = $_GET['id'];
-$action = $_GET['action'];
-$order = $_GET['order'];
+$id = isset($_GET['id']) ? $_GET['id']: 0;
+$action = isset($_GET['action']) ? $_GET['action'] : NULL;
+$order = isset($_GET['order']) ? $_GET['order'] : NULL;
 $sid = session_id();
 
 class ShopClass

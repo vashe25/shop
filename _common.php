@@ -1,19 +1,9 @@
 <?php
-require_once '/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 Twig_Autoloader::register();
 
 $loader = new Twig_Loader_Filesystem('views');
 $twig = new Twig_Environment($loader);
-
-
-
-session_start();
-
-$goods = isset($_SESSION['goods']) ? $_SESSION['goods'] : array();
-$id = isset($_GET['id']) ? $_GET['id']: 0;
-$action = isset($_GET['action']) ? $_GET['action'] : NULL;
-$order = isset($_GET['order']) ? $_GET['order'] : NULL;
-$sid = session_id();
 
 class ShopClass
 {
@@ -87,38 +77,6 @@ class ShopClass
 
 $shop = new ShopClass();
 
-switch ($action) {
-	case 'add':
-		if (isset($goods[$id])) {
-			$goods[$id]++;
-		}
-		else {
-			$goods[$id] = 1;
-		}
-		$_SESSION['goods'] = $goods;
-		header('Location: catalog.php');
-		break;
-	
-	case 'delete':
-		if ($goods[$id] > 1) {
-			$goods[$id]--;
-		}
-		else {
-			unset($goods[$id]);
-		}
-		$_SESSION['goods'] = $goods;
-		header('Location: cart.php');
-		break;
-
-	case 'clearcart':
-		unset($_SESSION['goods']);
-		unset($mailSend);
-		header('Location: cart.php');
-		break;
-
-	case 'order':
-		$orderPrint = $shop->orderPrint($goods, $sid);
-		$mailSend = $shop->mailSend($orderPrint);
-		header('Location: cart.php');
-		break;
-}
+//старт сессии
+session_start();
+$goods = isset($_SESSION['goods']) ? $_SESSION['goods'] : array();

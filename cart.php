@@ -1,6 +1,36 @@
 <?php
 require_once '_common.php';
 
+
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
+$action = isset($_GET['action']) ? $_GET['action'] : NULL;
+$order = isset($_GET['order']) ? $_GET['order'] : NULL;
+
+switch ($action) {
+	case 'delete':
+		if ($goods[$id] > 1) {
+			$goods[$id]--;
+		}
+		else {
+			unset($goods[$id]);
+		}
+		$_SESSION['goods'] = $goods;
+		header('Location: cart.php');
+		break;
+
+	case 'clearcart':
+		unset($_SESSION['goods']);
+		unset($mailSend);
+		header('Location: cart.php');
+		break;
+
+	case 'order':
+		$orderPrint = $shop->orderPrint($goods, session_id());
+		$mailSend = $shop->mailSend($orderPrint);
+		header('Location: cart.php');
+		break;
+}
+
 $items = 0;
 $cost = 0;
 
@@ -29,6 +59,8 @@ if (isset($_SESSION['goods'])) {
 		
 	}
 	
+	//var_dump($products);
+	//var_dump($product);
 	//пробрасываем в шаблон вывода супер-массив и посчитанные: количество и стоимость заказа
 	echo $twig->render('cart.twig', array('product' => $product, 'items' => $items, 'cost' => $cost));
 }

@@ -23,11 +23,14 @@ if ($action == 'add') {
 }
 		
 
-//выбираем все продукты из базы
-$products = $shop->selectProducts();
+
 //сортируем товары, если требуется
 if ($action = "sort_price") {
 	$products = $shop->selectProductsByPrice($order);
+}
+else {
+	//выбираем все продукты из базы
+	$products = $shop->selectProducts();
 }
 
 //отправляем данные в шаблон

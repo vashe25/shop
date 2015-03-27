@@ -38,31 +38,41 @@ $cost = 0;
 if (isset($_SESSION['goods'])) {
 	
 	//достаем из сесии массив: 'ID продукта' => 'количество штук'
-	$products = $shop->selectCartProducts();
-
+	
 	//соберем супер-массив для проброски в шаблон вывода
-	foreach ($products as $key => $item) {
-		//выбираем из базы массив $продукта по его ID
-		$array =  $shop->selectProductById($key);
-		//добавляем в массив $продукта строку о количестве штук, заказанных пользователем
-		$array['item'] = $item;
-		//собираем все массивы $продуктов в один супер-массив, где ключем является ID продукта
-		$product["$key"]= $array;
+	$goodsIds = array_keys($_SESSION['goods']);
+	
+	$goodsIdsComma = implode(',', $goodsIds);
+	$sql = "SELECT * FROM products WHERE id IN($goodsIdsComma)";
+	$res = $db->query($sql);
+	$rows = $res->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach ($rows as $key => $row) {
+		$count = $_SESSION['goods'][$row['id']];
+		$rows[$key]['count'] = $count;
 	}
+
+	print '<pre>';
+	var_dump($_SESSION['goods']);
+	var_dump($rows);
+
+	//добавляем в массив $продукта строку о количестве штук, заказанных пользователем
+	//$array['item'] = $item;
+	//собираем все массивы $продуктов в один супер-массив, где ключем является ID продукта
+	//$product["$key"]= $array;
 	
 	//посчитаем пользователю его заказ
-	foreach ($product as $value) {
+	//foreach ($product as $value) {
 		//считаем количество товаров
-		$items = $value['item'] + $items;
+		//$items = $value['item'] + $items;
 		//считаем общую стоимость заказа
-		$cost = $value['item'] * $value['price'] + $cost;
+		//$cost = $value['item'] * $value['price'] + $cost;
 		
-	}
+	//}
 	
-	//var_dump($products);
-	//var_dump($product);
+	var_dump($array);
 	//пробрасываем в шаблон вывода супер-массив и посчитанные: количество и стоимость заказа
-	echo $twig->render('cart.twig', array('product' => $product, 'items' => $items, 'cost' => $cost));
+	//echo $twig->render('cart.twig', array('product' => $product, 'items' => $items, 'cost' => $cost));
 }
 
 else {

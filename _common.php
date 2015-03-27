@@ -76,6 +76,8 @@ class ShopClass
 }
 
 $shop = new ShopClass();
+//подключаемся к базе данных
+$db = new PDO('mysql:host=localhost;dbname=my','root','');
 
 //старт сессии
 session_start();

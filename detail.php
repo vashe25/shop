@@ -22,6 +22,7 @@ if ($action == 'add') {
 }
 
 //выбираем из базы данные о продукте с ID
-$product = $shop->selectProductById($id);
+$product = $db->query("SELECT * FROM products WHERE id=$id");
+$db = NULL;
 echo $twig->render('detail.twig', array('product' => $product));
 ?>

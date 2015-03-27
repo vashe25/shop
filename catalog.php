@@ -22,16 +22,16 @@ if ($action == 'add') {
 	header('Location: catalog.php');
 }
 		
-
-
 //сортируем товары, если требуется
 if ($action = "sort_price") {
-	$products = $shop->selectProductsByPrice($order);
+	$products = $db->query("SELECT * FROM products ORDER BY price $order");
 }
 else {
 	//выбираем все продукты из базы
-	$products = $shop->selectProducts();
+	$products = $db->query("SELECT * FROM products");
 }
+//Закрываем соединение с базой данных
+$db = NULL;
 
 //отправляем данные в шаблон
 echo $twig->render('catalog.twig', array('products' => $products));

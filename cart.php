@@ -39,15 +39,23 @@ if (isset($_SESSION['goods'])) {
 	//соберем супер-массив для проброски в шаблон вывода
 	//выбираем ключи из массива: 'ID продукта' => 'количество штук'
 	$goodsIds = array_keys($_SESSION['goods']);
+
+	foreach ($goodsIds as &$element) {
+		$element = intval($element);
+	}
 	
 	//разделяем запятыми: 'ID продукта','ID продукта','ID продукта'...
 	$goodsIdsComma = implode(',', $goodsIds);
 	
 	//выбираем из базы товары по 'ID продукта'
 	$sql = "SELECT * FROM products WHERE id IN($goodsIdsComma)";
-	$res = $db->query($sql);
-	$product = $res->fetchAll(PDO::FETCH_ASSOC);
-	
+	$res = $db->prepare($sql);
+	$res->execute();
+	$product = $res->fetchAll();
+
+	//отключаемся от базы данных
+	$db = NULL;
+
 	//добавляем в массив $продукта строку о количестве штук, заказанных пользователем
 	foreach ($product as $key => $row) {
 		$item = $_SESSION['goods'][$row['id']];
@@ -64,7 +72,8 @@ if (isset($_SESSION['goods'])) {
 		$cost = $value['item'] * $value['price'] + $cost;
 		
 	}
-	
+	//echo "<pre>";
+	//var_dump($goodsIds);
 	//пробрасываем в шаблон вывода супер-массив и посчитанные: количество и стоимость заказа
 	echo $twig->render('cart.twig', array('product' => $product, 'items' => $items, 'cost' => $cost));
 }

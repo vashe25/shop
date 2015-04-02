@@ -77,7 +77,12 @@ class ShopClass
 
 $shop = new ShopClass();
 //подключаемся к базе данных
-$db = new PDO('mysql:host=localhost;dbname=my','root','');
+$opt = array(
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+);
+
+$db = new PDO('mysql:host=localhost;dbname=my','root', '', $opt);
 
 //старт сессии
 session_start();

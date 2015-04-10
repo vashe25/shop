@@ -1,0 +1,27 @@
+{% block title %}
+			Shop: popup
+{% endblock %}
+
+{% block content %}
+	
+	<h1>Edit product</h1>
+	<hr>
+	<form name="update" method="POST" enctype="multipart/form-data" action="popup.php?id={{ id }}">
+		<div>product id: {{ product.id }}</div>
+		
+		<div>category id</div>
+		<input type="input" name="category_id" value="{{ product.category_id }}">
+		<div>title</div>
+		<input type="input" name="title" value="{{ product.title|e }}">
+		<div>description</div>
+		<textarea name="description">{{ product.description|e }}</textarea>
+		<div>price</div>
+		<input type="input" name="price" value="{{ product.price }}">
+		<div>image</div>
+		<input type="file" name="image">
+		<div><img src="{{ product.image }}"></div>
+		<div><br></div>
+		<input type="submit" name="action" value="update">
+	</form>
+
+{% endblock %}

@@ -1,8 +1,4 @@
 <?php
-//action determin
-$action = $_REQUEST['action'];
-//id determin
-$id = $_REQUEST['id'];
 
 class adminClass {
 	private $_db;
@@ -54,33 +50,17 @@ class adminClass {
 }
 $admin = new adminClass();
 
-switch ($action) {
-	case 'update':
-		/* upload */
-		$product = $admin->selectProductById($id);
-		$img = $admin->Upload($product['image']);
-		/* filtered AND combined */
-		$data = $admin->filterNcombine($_POST['category_id'], $_POST['title'], $_POST['description'], $_POST['price'], $img);
-		$sqlupdate = "UPDATE products SET {$data} WHERE id = '{$id}'";
-		mysql_query($sqlupdate) or die(mysql_error());
-		break;
-	
-	case 'add':
-		/* upload */
-		$img = $admin->Upload();
-		/* filtered AND combined */
-		$data = $admin->filterNcombine($_POST['category_id'], $_POST['title'], $_POST['description'], $_POST['price'], $img);
-		$sqladd = "INSERT INTO products SET {$data}";
-		mysql_query($sqladd) or die(mysql_error());
-		break;
+//стартуем!
+require_once 'vendor/autoload.php';
+Twig_Autoloader::register();
 
-	case 'delete':
-		$sqldelete = "DELETE FROM products WHERE id = {$id}";
-		mysql_query($sqldelete) or die(mysql_error());
-		header('Location: admin.php');
-		break;
+$loader = new Twig_Loader_Filesystem('views');
+$twig = new Twig_Environment($loader);
 
-	/*default:
-		DELETE FROM `my`.`products` WHERE `products`.`id` = 40 AND `products`.`category_id` = 4 AND `products`.`title` = 'Product 4' AND `products`.`description` = 'Description of Product 4' AND `products`.`price` = 20 AND `products`.`image` = 'img.jpg' LIMIT 1;
-		break;*/
-}
+//подключаемся к базе данных
+$opt = array(
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+);
+
+$db = new PDO('mysql:host=localhost;dbname=my','root', '', $opt);

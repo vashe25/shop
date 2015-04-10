@@ -1,49 +1,29 @@
 <?php
 require_once '_admin.php';
 
-if ($id != NULL) {
-	$product = $admin->selectProductById($id);
-?>
-<h1>Edit product</h1>
-<hr>
-<form name="update" method="POST" enctype="multipart/form-data" action="popup.php?id=<?=$id ?>">
-	<div>product id: <?=$product['id'] ?></div>
-	
-	<div>category id</div>
-	<input type="input" name="category_id" value="<?=$product['category_id'] ?>">
-	<div>title</div>
-	<input type="input" name="title" value="<?=$product['title'] ?>">
-	<div>description</div>
-	<textarea name="description"><?=htmlspecialchars($product['description'])?></textarea>
-	<div>price</div>
-	<input type="input" name="price" value="<?=$product['price'] ?>">
-	<div>image</div>
-	<input type="file" name="image">
-	<div><img src="<?=$product['image'] ?>"></div>
-	<div><br></div>
-	<input type="submit" name="action" value="update">
-</form>
-<?
+//id determin
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
+
+if ($id != 0) {
+	$row = $db->prepare("SELECT * FROM products WHERE id=:id");
+	$row->execute(array(':id' => $id));
+	$product = $row->fetchAll();
+	$db = NULL;
+	echo $twig->render('popup.twig', array('product' => $product[0], 'id' => $id));	
 }
 else{
-?>
-<h1>Add new product</h1>
-<hr>
-<form name="add" method="POST" enctype="multipart/form-data"  action="admin.php">
-	<div>category id</div>
-	<input type="input" name="category_id" value="">
-	<div>title</div>
-	<input type="input" name="title" value="">
-	<div>description</div>
-	<textarea name="description"></textarea>
-	<div>price</div>
-	<input type="input" name="price" value="">
-	<div>image</div>
-	<input type="file" name="image">
-	<div><img src=""></div>
-	<div><br></div>
-	<input type="submit" name="action" value="add">
-</form>
-<?
+	echo $twig->render('popup.twig');
 }
+
+
+function Upload($file) {
+		$uploadDir = 'prod_pix/';
+		$uploadedFile = $uploadDir. basename($_FILES['image']['name']);
+		if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadedFile)) {
+		}
+		else {
+			$uploadedFile = $file;
+		}
+		return $uploadedFile;
+	}
 ?>

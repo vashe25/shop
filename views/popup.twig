@@ -6,7 +6,7 @@
 	
 	<h1>Edit product</h1>
 	<hr>
-	<form name="update" method="POST" enctype="multipart/form-data" action="popup.php?id={{ id }}">
+	<form name="{{ action }}" method="POST" enctype="multipart/form-data" action="{{ parameter }}">
 		<div>product id: {{ product.id }}</div>
 		
 		<div>category id</div>
@@ -21,7 +21,7 @@
 		<input type="file" name="image">
 		<div><img src="{{ product.image }}"></div>
 		<div><br></div>
-		<input type="submit" name="action" value="update">
+		<input type="submit" name="action" value="{{ action }}">
 	</form>
 
 {% endblock %}

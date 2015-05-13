@@ -43,6 +43,15 @@ switch ($action) {
 		$query = "INSERT INTO products SET category_id = :category_id, title = :title, description = :description, price = :price, image = :img";
 		$product = $db->prepare($query);
 		$product->execute(array(':category_id' => $_POST['category_id'], ':title' => $_POST['title'], ':description' => $_POST['description'], ':price' => $_POST['price'], ':img' => $img));
+		
+		//last row in Products table
+		$maxId = $db->query("SELECT id FROM products ORDER BY id DESC LIMIT 1");
+
+		while ($item = $maxId->fetch()) {
+			$max = $item['id'];
+		}
+		
+		header('Location: popup.php?id='.$max);
 		break;	
 }
 
@@ -53,14 +62,14 @@ if ($id != 0) {
 	
 
 	$db = NULL;
-	$parameter = "popup.php?id=$product[0]['id']";
+	$parameter = "popup.php?id=".$product[0]['id'];
 	$action = 'update';
 	echo $twig->render('popup.twig', array('product' => $product[0], 'parameter' => $parameter, 'action' => $action));	
 }
 else{
 
 	$action = 'add';
-	$parameter = "admin.php";
+	$parameter = "popup.php?action=add";
 	echo $twig->render('popup.twig', array('parameter' => $parameter, 'action' => $action));
 }
 ?>

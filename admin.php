@@ -10,7 +10,7 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : NULL;
 if ($action == 'delete') {
 	$query = "DELETE FROM products WHERE id = :id";
 		$product = $db->prepare($query);
-		$product->exec(array(':id' => $id));
+		$product->execute(array(':id' => $id));
 		header('Location: admin.php');
 }
 

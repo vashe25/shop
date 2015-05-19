@@ -45,13 +45,12 @@ switch ($action) {
 		$product->execute(array(':category_id' => $_POST['category_id'], ':title' => $_POST['title'], ':description' => $_POST['description'], ':price' => $_POST['price'], ':img' => $img));
 		
 		//last row in Products table
-		$maxId = $db->query("SELECT id FROM products ORDER BY id DESC LIMIT 1");
+		//$maxId = $db->query("SELECT id FROM products ORDER BY id DESC LIMIT 1");
 
-		while ($item = $maxId->fetch()) {
-			$max = $item['id'];
-		}
-		
-		header('Location: popup.php?id='.$max);
+		//while ($item = $maxId->fetch()) {
+		//	$max = $item['id'];
+		//}
+		header('Location: popup.php?id='.$db->lastInsertId());
 		break;	
 }
 

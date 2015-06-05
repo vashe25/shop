@@ -1,0 +1,22 @@
+{% extends 'index.twig' %}
+
+{% block name %}
+	Shop->Admin login:
+{% endblock %}
+
+{% block content %}
+
+<h1>Login</h1>
+	<hr>
+	<form name="{{ action }}" method="POST" enctype="multipart/form-data" action="login.php">
+		
+		<div>Login</div>
+		<input type="input" name="login" value="{{ product.category_id }}">
+		
+		<div>Password</div>
+		<input type="input" name="pass" value="{{ product.category_id }}">
+		
+		<input type="submit" name="action" value="{{ action }}">
+	</form>
+    
+{% endblock %}

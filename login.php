@@ -9,6 +9,10 @@ $loader = new Twig_Loader_Filesystem('views');
 $twig = new Twig_Environment($loader);
 //
 
+echo $twig->render('login.twig', array('login' => $_POST['login'], 'password' => $_POST['pass'], 'action' => $_POST['action']));
+
+
+
 /*/проверяем залогинился ли пользователь
 if (!isset($_SESSION['login'])) {
 	header('Location: login.php');
@@ -24,7 +28,7 @@ $query = "CREATE TABLE `my`.`users`(
 ) ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 /*/
 
-//подключаемся к базе данных
+/*/подключаемся к базе данных
 $opt = array(
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -113,7 +117,5 @@ switch ($_POST['action']) {
 
 		break;
 }
-
-echo $twig->render('login.twig', array('products' => $products));
-
+*/
 ?>

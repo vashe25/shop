@@ -8,15 +8,16 @@
 
 <h1>Login</h1>
 	<hr>
-	<form name="{{ action }}" method="POST" enctype="multipart/form-data" action="login.php">
+	<form name="login" method="POST" enctype="multipart/form-data" action="login.php">
 		
 		<div>Login</div>
-		<input type="input" name="login" value="{{ product.category_id }}">
+		<input type="input" name="login" value="{{ login }}">
 		
 		<div>Password</div>
-		<input type="input" name="pass" value="{{ product.category_id }}">
-		
-		<input type="submit" name="action" value="{{ action }}">
+		<input type="input" name="pass" value="{{ password }}"><br>
+
+		<div>Action: {{ action }}</div>
+		<input type="submit" name="action" value="login"> <input type="submit" name="action" value="register">
 	</form>
     
 {% endblock %}

@@ -2,7 +2,7 @@
 session_start();
 
 //проверяем залогинился ли пользователь
-if (!isset($_SESSION['login'])) {
+if ($_SESSION['login'] == NULL) {
 	header('Location: login.php');
 }
 //

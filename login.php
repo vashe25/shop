@@ -9,10 +9,6 @@ $loader = new Twig_Loader_Filesystem('views');
 $twig = new Twig_Environment($loader);
 //
 
-echo $twig->render('login.twig', array('login' => $_POST['login'], 'password' => $_POST['pass'], 'action' => $_POST['action']));
-
-
-
 /*/проверяем залогинился ли пользователь
 if (!isset($_SESSION['login'])) {
 	header('Location: login.php');
@@ -28,7 +24,7 @@ $query = "CREATE TABLE `my`.`users`(
 ) ENGINE=INNODB CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 /*/
 
-/*/подключаемся к базе данных
+//подключаемся к базе данных
 $opt = array(
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -37,20 +33,26 @@ $opt = array(
 $db = new PDO('mysql:host=localhost;dbname=my','root', '', $opt);
 //
 
-$md5_pass = md5($_POST['pass']);
-$login = $_POST['login'];
+//вводим действие
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : NULL;
 
-//получаем содержимое таблицы 'users' в массив
-$query = "SELECT * FROM users ORDER BY id ASC";
-$stmnt = $db->prepare($query);
-$stmnt->execute();
-$stmnt = $stmnt->fetchAll();
-//
-
-switch ($_POST['action']) {
+switch ($action) {
 		
 		//логинимся
 	case 'login':
+		
+		//хэшируем пароль
+		$pass = $_POST['pass'];
+		$md5_pass = md5($pass);
+		$login = $_POST['login'];
+		//
+
+		//получаем содержимое таблицы 'users' в массив
+		$query = "SELECT * FROM users ORDER BY id ASC";
+		$stmnt = $db->prepare($query);
+		$stmnt->execute();
+		$stmnt = $stmnt->fetchAll();
+		//
 
 		//проверяем существует ли 'login' в таблице 'users'
 		foreach ($stmnt as $value) {
@@ -64,17 +66,16 @@ switch ($_POST['action']) {
 					//
 
 					//введенные данные верны
-					$status['login'] = TRUE;
-					echo "Logged In!";
-
+					//echo "Logged In!";
 					header('Location: admin.php');
 					break;
 				}
 			}
 			else {
 				//пользователь ввел не верные данные
-				$status['login'] = FALSE;
-				echo "Error: entered login or password isn't correct";
+				$error = "Error: login or password isn't correct";
+				
+				echo $twig->render('login.twig', array('login' => $login, 'password' => $pass, 'error' => $error));
 				break;
 			}
 		}
@@ -94,6 +95,19 @@ switch ($_POST['action']) {
 
 		//регистрируемся
 	case 'register':
+
+		//хэшируем пароль
+		$pass = $_POST['pass'];
+		$md5_pass = md5($pass);
+		$login = $_POST['login'];
+		//
+
+		//получаем содержимое таблицы 'users' в массив
+		$query = "SELECT * FROM users ORDER BY id ASC";
+		$stmnt = $db->prepare($query);
+		$stmnt->execute();
+		$stmnt = $stmnt->fetchAll();
+		//
 		
 		//проверяем существует ли 'login' в таблице 'users'
 		foreach ($stmnt as $value) {
@@ -115,7 +129,17 @@ switch ($_POST['action']) {
 		}
 		//
 
+		break;	
+	default:
+		
+		echo $twig->render('login.twig', array());
+		
 		break;
 }
-*/
+
+
+
+	
+
+
 ?>

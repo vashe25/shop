@@ -9,7 +9,10 @@
 <h1>Login</h1>
 	<hr>
 	<form name="login" method="POST" enctype="multipart/form-data" action="login.php">
-		
+		{% if error %}
+			<div>{{ error }}</div>
+		{% endif %}
+
 		<div>Login</div>
 		<input type="input" name="login" value="{{ login }}">
 		
@@ -21,3 +24,5 @@
 	</form>
     
 {% endblock %}
+
+{% if expression %}{% endif %}

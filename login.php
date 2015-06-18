@@ -10,7 +10,7 @@ $twig = new Twig_Environment($loader);
 //
 
 /*/проверяем залогинился ли пользователь
-if (!isset($_SESSION['login'])) {
+if ($_SESSION['login'] == NULL) {
 	header('Location: login.php');
 }
 /*/
@@ -112,7 +112,11 @@ switch ($action) {
 		//проверяем существует ли 'login' в таблице 'users'
 		foreach ($stmnt as $value) {
 			if ($login == $value['login']) {
-				echo "Error: user already registred";
+				
+				//этот логин уже занят
+				$error = "Error: user already registred. Choose another name.";
+				echo $twig->render('login.twig', array('login' => $login, 'password' => $pass, 'error' => $error));
+
 				break;
 			}
 			else {
@@ -136,10 +140,5 @@ switch ($action) {
 		
 		break;
 }
-
-
-
-	
-
 
 ?>

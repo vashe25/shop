@@ -24,8 +24,26 @@ switch ($action) {
 		break;
 
 	case 'order':
-		$orderPrint = $shop->orderPrint($goods, session_id());
-		$mailSend = $shop->mailSend($orderPrint);
+		//соберем письмо менеджеру
+		$order = "<h3>Order: " . session_id() . "</h3>\r\n";
+		$order .= "<table>\r\n";
+		$order .= "<tr><th>Product id</th><th>Items</th></tr>\r\n";
+
+		foreach ($goods as $key => $value) {
+			$order .= "<tr><td>" . $key . "</td><td>" . $value . "</th></tr>\r\n";	
+		}
+
+		$order .= "</table>\r\n";
+		
+		$headers = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+		
+		$headers .= 'From: shop@example.com' . "\r\n" .
+			'Reply-To: manager@example.com' . "\r\n" .
+			'X-Mailer: PHP/';
+		//отправим письмо
+		mail('somebody@ya.ru', 'New order', $order, $headers);
+		//обновим корзину
 		header('Location: cart.php');
 		break;
 }
@@ -83,4 +101,4 @@ else {
 	//запускаем шаблон, в случае пустой корзины
 	echo $twig->render('cart.twig');
 }
-?>	
+?>

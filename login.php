@@ -125,8 +125,10 @@ switch ($action) {
 			$message = '<html><head></head><body><p><a href=\"http://shop/login.php?action=activate&hash=' . $hash . '\">Push to activate your account!</a></p></body></html>';
 			$headers  = 'MIME-Version: 1.0' . "\r\n";
 			$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-
-			$mail = mail('somebody@ya.ru', 'Account activation', $message, $headers);
+			$headers .= 'From: shop@example.com' . "\r\n" .
+				'Reply-To: shop@example.com' . "\r\n" .
+				'X-Mailer: PHP/';
+			mail('somebody@ya.ru', 'Account activation', $message, $headers);
 			//
 			
 			$error = "Success: user registered";
@@ -157,7 +159,10 @@ switch ($action) {
 					$headers  = 'MIME-Version: 1.0' . "\r\n";
 					$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 
-					$mail = mail('somebody@ya.ru', 'Account activation', $message, $headers);
+					$headers .= 'From: shop@example.com' . "\r\n" .
+						'Reply-To: shop@example.com' . "\r\n" .
+						'X-Mailer: PHP/';
+					mail('somebody@ya.ru', 'Account activation', $message, $headers);
 					//
 					
 					$error = "Success: user registered";
@@ -194,7 +199,7 @@ switch ($action) {
 
 	default:
 		
-		echo $twig->render('login.twig', array());
+		echo $twig->render('login.twig');
 		
 		break;
 }
